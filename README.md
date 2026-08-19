@@ -1,4 +1,4 @@
-# Crop Yield Estimator — Nigerian Agricultural AI
+# Crop Yield Estimator — Nigerian Agricultural AI (3MTT Capstone Project)
 
 > **Data-driven crop yield forecasting and explainable feature evaluation for Nigerian agriculture.**
 
@@ -11,7 +11,7 @@
 
 ## 1. Problem Statement (Nigerian Agriculture Context)
 
-Smallholder farmers across Nigeria frequently experience unpredictable crop yields and financial instability due to climate variability, lack of localized weather insights, and uncertain yield expectations prior to planting. Without data-driven yield benchmarks, farmers struggles to plan fertilizer investments, storage logistics, and crop insurance effectively.
+Smallholder farmers across Nigeria frequently experience unpredictable crop yields and financial instability due to climate variability, lack of localized weather insights, and uncertain yield expectations prior to planting. Without data-driven yield benchmarks, farmers struggle to plan fertilizer investments, storage logistics, and crop insurance effectively.
 
 The **Crop Yield Estimator** provides a machine learning solution that estimates crop yield per hectare ($kg/ha$) from localized satellite weather telemetry (rainfall, temperature, solar radiation), soil nutrient profiles ($N, P, K, pH$), and farming input rates.
 
@@ -81,8 +81,8 @@ We evaluated three scikit-learn regressor algorithms on an 80/20 train/test spli
 
 ### Step 1: Clone Repository & Set Up Virtual Environment
 ```bash
-git clone https://github.com/your-username/yield-estimator.git
-cd yield-estimator
+git clone https://github.com/Aliyusaidubadamasi/3mtt-Final-Capstone-Project.git
+cd 3mtt-Final-Capstone-Project
 
 # Create and activate virtual environment
 python -m venv .venv
@@ -119,11 +119,12 @@ Explore the notebooks in order inside `/notebooks`:
 ## 7. Repository Structure
 
 ```
-Yield Estimator/
+3mtt-Final-Capstone-Project/
 ├── app.py                          # FastAPI backend server & static router
 ├── requirements.txt                # Pinned project dependencies
 ├── README.md                       # Project documentation
-├── Crop_Yield_Estimator_Project_Plan.md # Core project specification
+├── Procfile                        # Cloud deployment web process configuration
+├── render.yaml                     # Render automated cloud deployment blueprint
 ├── download_nasa_power_nigeria.py  # NASA POWER API daily weather downloader
 │
 ├── datasets/                       # Raw and processed datasets
@@ -147,10 +148,7 @@ Yield Estimator/
 ├── src/                            # Core Python Modules
 │   ├── prepare_dataset.py          # Data ingestion & ETL pipeline
 │   ├── train_model.py              # ML model comparison & training
-│   ├── predict.py                  # Inference & feature importance API
-│   ├── create_prep_notebook.py     # Builder script for Notebook 00
-│   ├── create_eda_notebook.py      # Builder script for Notebook 01
-│   └── create_model_notebook.py    # Builder script for Notebook 02
+│   └── predict.py                  # Inference & feature importance API
 │
 └── static/                         # Web Application Frontend Assets
     ├── index.html                  # Multi-page glassmorphic HTML5 UI
