@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <!-- Sticky Glassmorphic Header -->
+    <!-- Sticky Glassmorphic Header with Responsive Hamburger Menu -->
     <header class="app-header">
         <div class="header-container">
             <div class="brand" onclick="switchPage('home')">
@@ -26,7 +26,15 @@
                 </div>
             </div>
 
-            <nav class="nav-links">
+            <!-- Hamburger Toggle Button for Mobile Screens -->
+            <button class="hamburger-toggle" id="hamburger-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+
+            <!-- Navigation Links (Desktop Pill Bar / Mobile Dropdown Drawer) -->
+            <nav class="nav-links" id="nav-links">
                 <button class="nav-btn active" data-target="home" onclick="switchPage('home')">Home</button>
                 <button class="nav-btn" data-target="estimator" onclick="switchPage('estimator')">Yield Estimator</button>
                 <button class="nav-btn" data-target="analytics" onclick="switchPage('analytics')">Analytics</button>

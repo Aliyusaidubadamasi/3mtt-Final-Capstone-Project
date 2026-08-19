@@ -1,6 +1,6 @@
 /* ==========================================================================
    Crop Yield Estimator — Modern Dark/Emerald Glassmorphism Design System
-   100% Responsive Multi-Device & Mobile-First Optimization
+   100% Responsive Multi-Device & Mobile Hamburger Drawer Navigation
    ========================================================================== */
 
 :root {
@@ -80,6 +80,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    position: relative;
 }
 
 .brand {
@@ -125,7 +126,45 @@ body {
     color: var(--text-muted);
 }
 
-/* Navigation Links (Scrollable on Mobile) */
+/* Hamburger Toggle Button (Desktop: Hidden, Mobile: Visible) */
+.hamburger-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 102;
+    touch-action: manipulation;
+}
+
+.hamburger-bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Hamburger Active / Transform into X */
+.hamburger-toggle.open .hamburger-bar:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+    background-color: var(--primary);
+}
+
+.hamburger-toggle.open .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-toggle.open .hamburger-bar:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+    background-color: var(--primary);
+}
+
+/* Navigation Links (Desktop Pill Bar) */
 .nav-links {
     display: flex;
     gap: 4px;
@@ -133,15 +172,6 @@ body {
     padding: 4px;
     border-radius: 30px;
     border: 1px solid var(--border-color);
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    max-width: 100%;
-}
-
-.nav-links::-webkit-scrollbar {
-    display: none;
 }
 
 .nav-btn {
@@ -981,7 +1011,7 @@ body {
 
 
 /* ==========================================================================
-   Comprehensive Responsive Breakpoints (Tablets & Mobile Phones)
+   Responsive Breakpoints & Mobile Hamburger Drawer Menu
    ========================================================================== */
 
 /* Medium Devices (Tablets, Laptops <= 1024px) */
@@ -999,31 +1029,51 @@ body {
     }
 }
 
-/* Small Devices (Smartphones <= 768px) */
+/* Small Devices & Mobile (<= 768px): Mobile Hamburger Menu Drawer */
 @media (max-width: 768px) {
     .header-container {
-        padding: 10px 16px;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-
-    .brand {
-        justify-content: center;
+        padding: 12px 20px;
     }
 
     .header-status {
-        display: none; /* Hide status badge on mobile header to save vertical space */
+        display: none; /* Hide status pill on mobile header */
     }
 
+    /* Display Hamburger Toggle Button */
+    .hamburger-toggle {
+        display: flex;
+    }
+
+    /* Convert Nav Links into Glassmorphic Dropdown Drawer */
     .nav-links {
-        justify-content: flex-start;
-        padding: 4px 6px;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(9, 14, 23, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+        z-index: 99;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .nav-links.mobile-open {
+        display: flex;
+        animation: slideDownMenu 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .nav-btn {
-        font-size: 13px;
-        padding: 6px 14px;
+        width: 100%;
+        text-align: left;
+        padding: 12px 18px;
+        font-size: 15px;
+        border-radius: var(--radius-sm);
     }
 
     .main-container {
@@ -1069,5 +1119,17 @@ body {
 
     .results-card {
         padding: 18px;
+    }
+}
+
+/* Animations */
+@keyframes slideDownMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

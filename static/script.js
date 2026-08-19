@@ -86,7 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAnalytics();
 });
 
-// Multi-Page Switcher
+// Mobile Hamburger Menu Toggle
+function toggleMobileMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const hamburger = document.getElementById('hamburger-toggle');
+    if (navLinks && hamburger) {
+        navLinks.classList.toggle('mobile-open');
+        hamburger.classList.toggle('open');
+    }
+}
+
+// Multi-Page Switcher & Auto-close Mobile Menu
 function switchPage(pageId) {
     const sections = document.querySelectorAll('.page-section');
     const navBtns = document.querySelectorAll('.nav-btn');
@@ -107,6 +117,12 @@ function switchPage(pageId) {
         targetSection.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Auto-close mobile drawer menu on selection
+    const navLinks = document.getElementById('nav-links');
+    const hamburger = document.getElementById('hamburger-toggle');
+    if (navLinks) navLinks.classList.remove('mobile-open');
+    if (hamburger) hamburger.classList.remove('open');
 }
 
 // Fetch Dropdown Options from FastAPI
