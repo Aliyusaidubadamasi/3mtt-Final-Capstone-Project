@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Estimator — Data-Driven Agricultural Intelligence</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Sticky Glassmorphic Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand" onclick="switchPage('home')">
+                <span class="brand-icon">🌱</span>
+                <div class="brand-text">
+                    <span class="brand-name">Yield Estimator <span class="badge-ai">AI</span></span>
+                    <span class="brand-sub">Nigerian Agriculture Intelligence</span>
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <button class="nav-btn active" data-target="home" onclick="switchPage('home')">Home</button>
+                <button class="nav-btn" data-target="estimator" onclick="switchPage('estimator')">Yield Estimator</button>
+                <button class="nav-btn" data-target="analytics" onclick="switchPage('analytics')">Analytics</button>
+                <button class="nav-btn" data-target="model-info" onclick="switchPage('model-info')">Model Info</button>
+                <button class="nav-btn" data-target="about" onclick="switchPage('about')">About</button>
+            </nav>
+
+            <div class="header-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Model Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="main-container">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-section active">
+            <div class="hero-card">
+                <div class="hero-badge">🇳🇬 Nigerian Agricultural Machine Learning</div>
+                <h1 class="hero-title">Data-Driven Crop Yield Forecasting & Explainable Insights</h1>
+                <p class="hero-description">
+                    Predict crop yield per hectare for Nigerian smallholder farmers using high-resolution NASA POWER weather telemetry, FAOSTAT historical yield statistics, and machine learning feature importance analysis.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" onclick="switchPage('estimator')">
+                        🚀 Launch Estimator Tool
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="switchPage('analytics')">
+                        📊 Explore Data Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🗺️</div>
+                    <div class="stat-val" id="stat-states">37</div>
+                    <div class="stat-lbl">Nigerian States & FCT</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌾</div>
+                    <div class="stat-val" id="stat-crops">11</div>
+                    <div class="stat-lbl">Major Staple Crops</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-val" id="stat-rows">5,038</div>
+                    <div class="stat-lbl">Ground-Truth Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-val">99.6%</div>
+                    <div class="stat-lbl">Random Forest R² Score</div>
+                </div>
+            </div>
+
+            <!-- Value Pillars -->
+            <div class="section-header">
+                <h2>Why Use Crop Yield Estimator?</h2>
+                <p>Solving key agricultural planning challenges for farmers, policy makers, and agritech founders.</p>
+            </div>
+
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon">🔮</div>
+                    <h3>Precision Yield Forecasting</h3>
+                    <p>Accurate harvest yield estimation ($kg/ha$) using combined climate parameters, soil nutrients ($N, P, K$), and input application rates.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">🧠</div>
+                    <h3>Explainable Feature Importance</h3>
+                    <p>Transparent AI that doesn't just give a single number, but highlights the top 5 factors driving your crop yield predictions.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">🛰️</div>
+                    <h3>NASA & FAOSTAT Telemetry</h3>
+                    <p>Integrated daily satellite climate data from NASA POWER API mapped to authoritative national crop production metrics.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 2: YIELD ESTIMATOR ================= -->
+        <section id="page-estimator" class="page-section">
+            <div class="section-header">
+                <h2>Crop Yield Estimator Tool</h2>
+                <p>Select your state, crop commodity, climate factors, and soil nutrients to calculate expected yield.</p>
+            </div>
+
+            <!-- Preset Quick-Bar -->
+            <div class="preset-bar">
+                <span class="preset-label">⚡ Quick Presets:</span>
+                <button class="preset-chip" onclick="loadPreset('kaduna_maize')">Kaduna Maize</button>
+                <button class="preset-chip" onclick="loadPreset('benue_yam')">Benue Yam</button>
+                <button class="preset-chip" onclick="loadPreset('kano_rice')">Kano Rice</button>
+                <button class="preset-chip" onclick="loadPreset('oyo_cassava')">Oyo Cassava</button>
+            </div>
+
+            <div class="estimator-layout">
+                <!-- FORM CONTROLS -->
+                <form id="prediction-form" class="form-container" onsubmit="handlePrediction(event)">
+
+                    <!-- Card 1: Location & Crop -->
+                    <div class="form-card">
+                        <div class="card-title">
+                            <span class="step-num">1</span>
+                            <h3>Location & Crop Commodity</h3>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label for="state">State / Territory</label>
+                                <select id="state" name="state" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="crop">Crop Commodity</label>
+                                <select id="crop" name="crop" required></select>
+                            </div>
+                        </div>
+                        <div class="form-grid-2" style="margin-top: 12px;">
+                            <div class="form-group">
+                                <label for="year">Harvest Year</label>
+                                <input type="number" id="year" name="year" value="2024" min="2000" max="2030" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="area_harvested_ha">Harvested Area (ha)</label>
+                                <input type="number" id="area_harvested_ha" name="area_harvested_ha" value="1200" step="10" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Climate & Weather -->
+                    <div class="form-card">
+                        <div class="card-title">
+                            <span class="step-num">2</span>
+                            <h3>Climate & Weather Telemetry</h3>
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="rainfall_mm">Annual Rainfall (mm)</label>
+                                <input type="number" id="rainfall_mm" name="rainfall_mm" value="1150" step="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="avg_temp_c">Avg Temp (°C)</label>
+                                <input type="number" id="avg_temp_c" name="avg_temp_c" value="26.8" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="max_temp_c">Max Temp (°C)</label>
+                                <input type="number" id="max_temp_c" name="max_temp_c" value="33.1" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="min_temp_c">Min Temp (°C)</label>
+                                <input type="number" id="min_temp_c" name="min_temp_c" value="20.2" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="humidity_pct">Relative Humidity (%)</label>
+                                <input type="number" id="humidity_pct" name="humidity_pct" value="65.0" step="0.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="solar_radiation">Solar Radiation (MJ/m²)</label>
+                                <input type="number" id="solar_radiation" name="solar_radiation" value="18.2" step="0.1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Soil Nutrients & Farm Inputs -->
+                    <div class="form-card">
+                        <div class="card-title">
+                            <span class="step-num">3</span>
+                            <h3>Soil Nutrients & Farm Inputs</h3>
+                        </div>
+                        <div class="form-grid-4">
+                            <div class="form-group">
+                                <label for="nitrogen_n">Nitrogen (N)</label>
+                                <input type="number" id="nitrogen_n" name="nitrogen_n" value="80.0" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phosphorus_p">Phosphorus (P)</label>
+                                <input type="number" id="phosphorus_p" name="phosphorus_p" value="35.0" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="potassium_k">Potassium (K)</label>
+                                <input type="number" id="potassium_k" name="potassium_k" value="25.0" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="soil_ph">Soil pH</label>
+                                <input type="number" id="soil_ph" name="soil_ph" value="6.5" step="0.1" min="3" max="10" required>
+                            </div>
+                        </div>
+                        <div class="form-grid-2" style="margin-top: 12px;">
+                            <div class="form-group">
+                                <label for="fertilizer_kg_ha">Fertilizer Rate (kg/ha)</label>
+                                <input type="number" id="fertilizer_kg_ha" name="fertilizer_kg_ha" value="95.0" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pesticide_kg_ha">Pesticide Rate (kg/ha)</label>
+                                <input type="number" id="pesticide_kg_ha" name="pesticide_kg_ha" value="4.2" step="0.1" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn btn-emerald btn-block">
+                        🔮 Predict Crop Yield
+                    </button>
+                </form>
+
+                <!-- OUTPUT RESULTS PANEL -->
+                <div class="results-panel">
+                    <div id="results-placeholder" class="placeholder-card">
+                        <div class="placeholder-icon">🌱</div>
+                        <h3>Ready for Inference</h3>
+                        <p>Adjust parameters on the left and click <strong>Predict Crop Yield</strong> to compute yield forecasts and explainable feature drivers.</p>
+                    </div>
+
+                    <div id="results-container" class="results-card hidden">
+                        <div class="result-header">
+                            <span class="result-badge" id="res-crop-state">Maize — Kaduna</span>
+                            <span class="time-stamp">Instant ML Result</span>
+                        </div>
+
+                        <div class="metrics-row">
+                            <div class="main-metric">
+                                <span class="metric-lbl">Predicted Yield (kg/ha)</span>
+                                <span class="metric-val" id="res-yield-kg">0</span>
+                                <span class="metric-unit">kg per hectare</span>
+                            </div>
+                            <div class="sub-metric">
+                                <span class="metric-lbl">Equivalent (Tonnes)</span>
+                                <span class="metric-val" id="res-yield-tonnes">0.00</span>
+                                <span class="metric-unit">tonnes per hectare</span>
+                            </div>
+                        </div>
+
+                        <div class="interpretation-box" id="res-interpretation">
+                            Interpretation summary will appear here.
+                        </div>
+
+                        <!-- Feature Importance Section -->
+                        <div class="feature-importance-section">
+                            <div class="fi-header">
+                                <h4>Top Feature Drivers</h4>
+                                <span class="fi-sub">Factors impacting this yield prediction</span>
+                            </div>
+
+                            <div class="fi-chart" id="fi-chart-container">
+                                <!-- Horizontal bar items dynamically rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 3: ANALYTICS DASHBOARD ================= -->
+        <section id="page-analytics" class="page-section">
+            <div class="section-header">
+                <h2>Agricultural Data Analytics Dashboard</h2>
+                <p>Exploratory insights across 5,038 records from NASA POWER, FAOSTAT, and Kaggle datasets.</p>
+            </div>
+
+            <div class="analytics-metrics-grid">
+                <div class="analytics-metric-card">
+                    <div class="an-val" id="an-total">5,038</div>
+                    <div class="an-lbl">Total Dataset Records</div>
+                </div>
+                <div class="analytics-metric-card">
+                    <div class="an-val" id="an-ng-count">2,442</div>
+                    <div class="an-lbl">Nigerian State-Crop-Year Observations</div>
+                </div>
+                <div class="analytics-metric-card">
+                    <div class="an-val" id="an-mean-yield">6,290 kg/ha</div>
+                    <div class="an-lbl">National Mean Crop Yield</div>
+                </div>
+                <div class="analytics-metric-card">
+                    <div class="an-val" id="an-rainfall">1,148 mm</div>
+                    <div class="an-lbl">Mean Annual Rainfall</div>
+                </div>
+            </div>
+
+            <div class="analytics-grid">
+                <!-- Chart Box 1: Yield by Crop Commodity -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Average Yield by Crop Commodity (kg/ha)</h3>
+                    </div>
+                    <div class="custom-bar-list" id="crop-analytics-list">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Chart Box 2: Top Yielding Nigerian States -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Top High-Yielding Nigerian States</h3>
+                    </div>
+                    <div class="custom-bar-list" id="state-analytics-list">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 4: MODEL BENCHMARKS ================= -->
+        <section id="page-model-info" class="page-section">
+            <div class="section-header">
+                <h2>Model Architecture & Performance Benchmarks</h2>
+                <p>Scikit-Learn regressor comparisons and 5-fold cross-validation results.</p>
+            </div>
+
+            <div class="benchmark-card">
+                <h3>Algorithm Comparison Table (80/20 Test Split)</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm Model</th>
+                                <th>RMSE (kg/ha)</th>
+                                <th>MAE (kg/ha)</th>
+                                <th>R² Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row">
+                                <td><strong>Random Forest Regressor</strong></td>
+                                <td><strong>215.85</strong></td>
+                                <td><strong>137.08</strong></td>
+                                <td><strong>0.9963</strong></td>
+                                <td><span class="tag tag-success">Selected Model</span></td>
+                            </tr>
+                            <tr>
+                                <td>Gradient Boosting Regressor</td>
+                                <td>425.50</td>
+                                <td>307.45</td>
+                                <td>0.9856</td>
+                                <td><span class="tag tag-secondary">Benchmark</span></td>
+                            </tr>
+                            <tr>
+                                <td>Linear Regression (Baseline)</td>
+                                <td>749.61</td>
+                                <td>595.80</td>
+                                <td>0.9553</td>
+                                <td><span class="tag tag-muted">Baseline</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="cv-box">
+                <div class="cv-badge">5-Fold Cross-Validation Result</div>
+                <div class="cv-score">Mean R² = 0.9964 (± 0.0002)</div>
+                <p>Evaluated across 5 independent training folds, confirming minimal variance and strong model generalization without overfitting.</p>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 5: ABOUT & LINEAGE ================= -->
+        <section id="page-about" class="page-section">
+            <div class="section-header">
+                <h2>About the Project & Data Lineage</h2>
+                <p>Solving agricultural planning gaps for Nigerian farmers through open-access climate telemetry.</p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Nigerian Agriculture Context</h3>
+                    <p>
+                        Nigerian smallholder farmers frequently experience crop losses and poor financial planning due to uncertain yield expectations. By combining state-level daily satellite weather data from the NASA POWER API with FAOSTAT ground-truth statistics, this MVP provides accessible data-driven yield forecasts and actionable agronomic recommendations.
+                    </p>
+                </div>
+
+                <div class="about-card">
+                    <h3>Data Sources & Provenance</h3>
+                    <ul class="lineage-list">
+                        <li><strong>NASA POWER Agroclimatology API:</strong> Daily rainfall, air temperature, relative humidity, and solar radiation for 37 Nigerian states (2015–2024).</li>
+                        <li><strong>FAOSTAT:</strong> UN Food and Agriculture Organization national crop yield ($kg/ha$) and area harvested data for Nigeria.</li>
+                        <li><strong>Kaggle Agronomic Data:</strong> Representative soil nutrient requirement profiles ($N, P, K, pH$) across major staple crops.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-container">
+            <span>🌱 Crop Yield Estimator — Built with Python, Scikit-Learn & FastAPI</span>
+            <span class="footer-credit">MIT License</span>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
